@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réservation de Séjour</title>
+    <link rel="stylesheet" href="mesStyles.css">
+	<script src="mescontroles.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Réservation de Séjour</h1>
+        <form>
+            <fieldset>
+                <legend>Informations Personnelles</legend>
+                <div class="radio-group">
+                    
+                        <input type="radio" name="client" value="nouveau" id="nouveau" checked onclick="return afficher('oui')"> 
+                    <label for="nouveau">Nouveau client</label>
+                    
+                        <input type="radio" name="client" id="ancien" value="inscrit" onclick="return afficher('non')"> 
+                    <label for="ancien">Déjà inscrit</label>
+                </div>
+                <label for="nom">Nom complet</label>
+                <input type="text" id="nom" name="nom" ><br>
+
+                <label for="email">Adresse e-mail</label>
+                <input type="email" id="email" name="email" required><br>
+
+                <label for="passeport">Numéro du passeport</label>
+                <input type="text" id="passeport" name="passeport" ><br>
+
+                <label for="motdepasse">Mot de passe</label>
+                <input type="password" id="motdepasse" name="motdepasse" ><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Informations de Séjour</legend>
+                <label for="destination">Destination</label>
+                <select id="destination" name="destination" ><br>
+                    <option value="">Sélectionnez une destination</option>
+                    
+                </select><br>
+
+                <label for="dateDebut">Date de début</label>
+                <input type="date" id="dateDebut" name="dateDebut" required><br>
+
+                <label for="dateFin">Date de fin</label>
+                <input type="date" id="dateFin" name="dateFin" required onChange="calculer()"><br>
+
+                <label for="prix">Prix</label>
+                <input type="number" id="prix" name="prix" readonly><br>
+            </fieldset>
+
+            <fieldset>
+                <legend>Informations de Paiement</legend>
+                <label for="numCarte">Numéro de carte</label>
+                <input type="text" id="numcarte" name="numCarte"><br>
+
+                <label for="dateFinCarte">Date de fin de validité</label>
+                <input type="text" id="dateFinCarte" name="dateFinCarte" placeholder="MM/YY"><br>
+
+                <label for="csv">CSV</label>
+                <input type="text" id="csv" name="csv"><br>
+            </fieldset>
+			<input type="reset" value="Annuler">
+            <input type="submit" value="Réserver">
+        </form>
+    </div>
+</body>
+</html>
