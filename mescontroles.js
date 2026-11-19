@@ -1,86 +1,70 @@
-// JavaScript Document
+(() => {
+  const form = document.getElementById('booking-form');
+  if (!form) return;
+  const start = document.getElementById('start');
+  const end = document.getElementById('end');
+  const destination = document.getElementById('destination');
+  const guests = document.getElementById('guests');
+  const estimate = document.getElementById('estimate');
+  const note = document.getElementById('estimate-note');
+  const message = document.getElementById('booking-message');
+  const rates = { Hammamet: 180, 'El Jem': 120, Sbeitla: 110 };
+  const today = new Date();
+  const localDate = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  start.min = localDate;
+  end.min = localDate;
 
-function charger(x)
-{video=document.getElementById("vid")
- video.src=x+".mp4"
- if (x=="ham")
- {document.getElementById("des").innerHTML="hammemet dra chbeha"}
- else if(x=="jam")
-	 {document.getElementById("des").innerHTML="jam dra chbeha"}
- else
-	 {document.getElementById("des").innerHTML="sbitla dra chbha"}
- 
-	
-}
-function afficher(w)
-{if (w=="oui")
-{document.getElementById("nom").disabled=false
- document.getElementById("passeport").disabled=false
- 
+  function updateEstimate() {
+    if (start.value) end.min = start.value;
+    if (!start.value || !end.value || !destination.value || Number(guests.value) < 1) {
+      estimate.textContent = '—';
+      note.textContent = 'Sélectionnez votre destination et vos dates.';
+      return;
+    }
+    const nights = Math.round((new Date(end.value + 'T12:00:00') - new Date(start.value + 'T12:00:00')) / 86400000);
+    if (nights < 1) {
+      estimate.textContent = 'Dates à corriger';
+      note.textContent = 'La date de départ doit être après la date d’arrivée.';
+      return;
+    }
+    const total = nights * rates[destination.value] * Number(guests.value);
+    estimate.textContent = new Intl.NumberFormat('fr-TN', { style: 'currency', currency: 'TND', maximumFractionDigits: 0 }).format(total);
+    note.textContent = nights + ' nuit(s) · ' + guests.value + ' voyageur(s) · tarif indicatif de démonstration';
+  }
+  [start, end, destination, guests].forEach(el => el.addEventListener('change', updateEstimate));
+  const params = new URLSearchParams(window.location.search);
+  const selected = params.get('destination');
+  if (selected && [...destination.options].some(option => option.value === selected)) destination.value = selected;
+  updateEstimate();
 
-}
- else
-	{
- document.getElementById("nom").disabled=true
- document.getElementById("passeport").disabled=true}
-	
-}
-function calculer()
-{dd=new Date(document.getElementById("dateDebut").value)
- df=new Date(document.getElementById("dateFin").value)
- 
- p=Math.trunc((df-dd)/(1000*60*60*24*120))
- document.getElementById("prix").value=p
- 
- 
-	
-}
-function verif()
-{nom=document.getElementById("nom").value
- np=document.getElementById("passeport").value
- d=document.getElementById("destination").selectedIndex
- mp=document.getElementById("motdepasse").value
- nc=document.getElementById("numcarte").value
- dv=document.getElementById("datevalidation").value
- csv=document.getElementById("csv").value
- sp="@#$%^^&***())))___)/*-+<>,,"
- if(!nom.length==intervalle(nom.toUpperCase,"A","Z")+intervalle(nom," "," ")|| ch[Math.trunc(ch.length/2)]!=" "||(document.getElementById("nouveau").checked)||nom=="")
-	{return false}
-  if (!np.length==intervalle(np.toUpperCase,"A","Z")+intervalle(np,0,9) && np.length<6)
- {return false}
- if(speciaux(mp)==false||document.getElementById("motdepasse").checked||mp==""
-	{return false
-	
-	}
- if(d==-1)
-	 {return false}
- if()
-}
-	
-	
-
-function intervalle(ch,a,b)
-{nb=0
- for(i=0;i<ch.length;i++)
-	 {if (b<=ch[i]<=a)
-	  {
-		  nb=nb+1
-	  }
-		 
-	 }
- return nb
-	
-}
- function speciaux()
- {nb1=0
-  nb2=0
-  nb3=0
-  for(i=0;i<=ch.length;i++)
-	  {if(ch[i]>="A" && ch[i]<="Z")
-		  nb1=nb1+1
-		  
-	  }
-  else if{}
-	 
- }
- 
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    message.textContent = '';
+    if (!form.reportValidity()) return;
+    const nights = Math.round((new Date(end.value + 'T12:00:00') - new Date(start.value + 'T12:00:00')) / 86400000);
+    if (nights < 1) { message.textContent = 'La date de départ doit être après la date d’arrivée.'; return; }
+    const request = {
+      reference: 'FED-' + Date.now().toString(36).toUpperCase(),
+      name: form.name.value.trim(),
+      email: form.email.value.trim(),
+      destination: destination.value,
+      start: start.value,
+      end: end.value,
+      guests: Number(guests.value),
+      estimateTnd: nights * rates[destination.value] * Number(guests.value),
+      createdAt: new Date().toISOString()
+    };
+    try {
+      const saved = JSON.parse(localStorage.getItem('fediTravelRequests') || '[]');
+      saved.push(request);
+      localStorage.setItem('fediTravelRequests', JSON.stringify(saved));
+      message.textContent = 'Demande de démonstration enregistrée dans ce navigateur. Référence : ' + request.reference + '. Aucune réservation réelle n’a été effectuée.';
+      form.reset();
+      end.min = start.min;
+      estimate.textContent = '—';
+      note.textContent = 'Sélectionnez vos dates pour calculer le nombre de nuits.';
+    } catch (error) {
+      message.textContent = 'Le navigateur n’a pas pu enregistrer cette demande. Vérifiez les paramètres de stockage.';
+    }
+  });
+})();
