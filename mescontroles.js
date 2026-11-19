@@ -47,8 +47,6 @@
     if (nights < 1) { message.textContent = 'La date de départ doit être après la date d’arrivée.'; return; }
     const request = {
       reference: 'FED-' + Date.now().toString(36).toUpperCase(),
-      name: nameInput.value.trim(),
-      email: emailInput.value.trim(),
       destination: destination.value,
       start: start.value,
       end: end.value,
