@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Consultez et gérez les estimations de séjour enregistrées sur cet appareil.">
+  <title>Mes demandes — Fedi Travel</title>
+  <link rel="stylesheet" href="mesStyles.css">
+  <script src="mes-demandes.js" defer></script>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html"><span class="brand-mark">F</span><span>Fedi <b>Travel</b></span></a>
+  <nav aria-label="Navigation principale">
+    <a href="destination.html">Destinations</a>
+    <a href="sejour.html">Planifier un séjour</a>
+    <a href="demandes.html" aria-current="page">Mes demandes</a>
+  </nav>
+</header>
+<main class="page-main">
+  <p class="eyebrow">Votre carnet de voyage</p>
+  <h1>Mes demandes enregistrées.</h1>
+  <p class="lead">Retrouvez les estimations créées sur cet appareil. Vous pouvez retirer une demande à tout moment.</p>
+  <div class="notice"><strong>Confidentialité :</strong> ces données restent dans le stockage local de ce navigateur. Le nom et l’adresse e-mail saisis dans le formulaire ne sont pas enregistrés. Aucune demande n’est transmise à une agence et aucune réservation réelle n’est effectuée.</div>
+  <div class="requests-toolbar">
+    <p id="request-count" aria-live="polite">Chargement…</p>
+    <button id="clear-requests" class="button button-light" type="button">Effacer toutes les demandes</button>
+  </div>
+  <section id="request-list" class="request-list" aria-label="Demandes enregistrées"></section>
+  <p id="requests-empty" class="request-empty" hidden>Aucune demande enregistrée pour le moment. <a class="text-link" href="sejour.html">Préparer un séjour →</a></p>
+  <p id="storage-error" class="form-message" role="alert" hidden>Le navigateur n’a pas pu accéder au stockage local.</p>
+</main>
+<footer><a class="brand brand-footer" href="index.html"><span class="brand-mark">F</span><span>Fedi <b>Travel</b></span></a><p>Un projet étudiant — découverte et valorisation du patrimoine tunisien.</p></footer>
+</body>
+</html>
