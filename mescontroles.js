@@ -1,6 +1,8 @@
 (() => {
   const form = document.getElementById('booking-form');
   if (!form) return;
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
   const start = document.getElementById('start');
   const end = document.getElementById('end');
   const destination = document.getElementById('destination');
@@ -45,8 +47,8 @@
     if (nights < 1) { message.textContent = 'La date de départ doit être après la date d’arrivée.'; return; }
     const request = {
       reference: 'FED-' + Date.now().toString(36).toUpperCase(),
-      name: form.name.value.trim(),
-      email: form.email.value.trim(),
+      name: nameInput.value.trim(),
+      email: emailInput.value.trim(),
       destination: destination.value,
       start: start.value,
       end: end.value,
