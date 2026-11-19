@@ -58,7 +58,7 @@
       const saved = JSON.parse(localStorage.getItem('fediTravelRequests') || '[]');
       saved.push(request);
       localStorage.setItem('fediTravelRequests', JSON.stringify(saved));
-      message.textContent = 'Demande de démonstration enregistrée dans ce navigateur. Référence : ' + request.reference + '. Aucune réservation réelle n’a été effectuée.';
+      message.textContent = 'Demande de démonstration enregistrée dans ce navigateur. Seuls les détails du séjour sont conservés. Référence : ' + request.reference + '. Aucune réservation réelle n’a été effectuée.';
       form.reset();
       end.min = start.min;
       estimate.textContent = '—';
